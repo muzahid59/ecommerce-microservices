@@ -16,14 +16,12 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
-        console.log('product:', product); 
-        console.log('INVENTORY_SERVICE_URL', process.env.INVENTORY_SEVICE_URL);
-
+        
         if (product.inventoryId === null) {
           /// create inventory record for the product
           console.log('Creating inventory record for product:', product.id);
           const {data: inventory} = await axios.post(
-              `${process.env.INVENTORY_SEVICE_URL}/inventories`,
+              `${process.env.INVENTORY_SERVICE_URL}/inventories`,
               {
                   productId: product.id,
                   sku: product.sku, 
@@ -50,7 +48,7 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
         }
         // fetch inventory details
         const {data: inventory} = await axios.get(
-            `${process.env.INVENTORY_SEVICE_URL}/inventories/${product.inventoryId}`
+            `${process.env.INVENTORY_SERVICE_URL}/inventories/${product.inventoryId}`
         );
         return res.status(200).json({
             ...product,

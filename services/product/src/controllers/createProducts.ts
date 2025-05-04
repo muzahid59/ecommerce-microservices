@@ -5,8 +5,6 @@ import axios from 'axios';
 
 const createProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('process.env:', process.env); // Add this line
-        console.log('INVENTORY_SERVICE_URL', process.env.INVENTORY_SEVICE_URL);
         // Validate request body
         const parsedBody = ProductCreateDTOSchema.safeParse(req.body);
         if (!parsedBody.success) {
@@ -34,7 +32,6 @@ const createProduct = async (req: Request, res: Response, next: NextFunction) =>
         });
         console.log('Product created successfully', product.id);
 
-        console.log('INVENTORY_SERVICE_URL', process.env.INVENTORY_SEVICE_URL);
         // create inventory record for the product
         const {data: inventory} = await axios.post(
             `${process.env.INVENTORY_SEVICE_URL}/inventories`,
