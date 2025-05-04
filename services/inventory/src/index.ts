@@ -26,10 +26,12 @@ app.get('/inventories/:id/details', (req: Request, res: Response, next: NextFunc
 app.get('/inventories/:id', (req: Request, res: Response, next: NextFunction) => {
     getInventoryById(req, res, next);
 });
+
 app.put('/inventories/:id', (req: Request, res: Response, next: NextFunction) => {
     updateInventory(req, res, next);
 });
 app.post('/inventories', (req: Request, res: Response, next: NextFunction) => {
+    console.log('createInventory called');
     createInventory(req, res, next);
 });
 

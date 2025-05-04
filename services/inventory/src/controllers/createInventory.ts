@@ -8,7 +8,7 @@ const createInventory = async (req: Request, res: Response, next: NextFunction) 
         if (!parsedBody.success) {
             return res.status(400).json({ error: parsedBody.error.errors });
         }
-        const invertory = await prisma.inventory.create({
+        const inventory = await prisma.inventory.create({
             data: {
               ...parsedBody.data,
               histories: {
@@ -25,7 +25,7 @@ const createInventory = async (req: Request, res: Response, next: NextFunction) 
                 quantity: true,
             }
         });
-        return res.status(201).json(invertory);
+        return res.status(201).json(inventory);
     } catch (error) {
         next(error);
     }

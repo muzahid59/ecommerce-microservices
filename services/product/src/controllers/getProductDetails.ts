@@ -3,6 +3,8 @@ import prisma from '@/prisma';
 import axios from 'axios';
 
 const getProductDetails = async (req: Request, res: Response, next: NextFunction) => { 
+    console.log("getProductDetails called");
+    console.log('req.params:', req.params); // Add this line
     try {
         const { id } = req.params;
         const product = await prisma.product.findUnique({
@@ -10,20 +12,24 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
                 id: id,
             },
           });
+
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
+        console.log('product:', product); 
+        console.log('INVENTORY_SERVICE_URL', process.env.INVENTORY_SEVICE_URL);
 
         if (product.inventoryId === null) {
           /// create inventory record for the product
+          console.log('Creating inventory record for product:', product.id);
           const {data: inventory} = await axios.post(
-              `${process.env.INVENTORY_SERVICE_URL}/inventories`,
+              `${process.env.INVENTORY_SEVICE_URL}/inventories`,
               {
                   productId: product.id,
                   sku: product.sku, 
               }
           );
-
+          console.log('Inventory record created successfully:', inventory);
           // update product and store inventory id
           await prisma.product.update({
               where: {
@@ -44,7 +50,7 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
         }
         // fetch inventory details
         const {data: inventory} = await axios.get(
-            `${process.env.INVENTORY_SERVICE_URL}/inventories/${product.inventoryId}`
+            `${process.env.INVENTORY_SEVICE_URL}/inventories/${product.inventoryId}`
         );
         return res.status(200).json({
             ...product,
