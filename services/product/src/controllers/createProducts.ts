@@ -34,7 +34,7 @@ const createProduct = async (req: Request, res: Response, next: NextFunction) =>
 
         // create inventory record for the product
         const {data: inventory} = await axios.post(
-            `${process.env.INVENTORY_SEVICE_URL}/inventories`,
+            `${process.env.INVENTORY_SERVICE_URL}/inventories`,
             {
                 productId: product.id,
                 sku: product.sku,

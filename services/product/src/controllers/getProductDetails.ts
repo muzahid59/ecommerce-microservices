@@ -42,8 +42,8 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
           return res.status(201).json({
               ...product,
               inventoryId: inventory.id,
-              stock: inventory.stock || 0,
-              stockStatus: inventory.stock > 0 ? 'in stock' : 'out of stock',
+              stock: inventory.quantity || 0,
+              stockStatus: inventory.quantity > 0 ? 'in stock' : 'out of stock',
           });
         }
         // fetch inventory details
@@ -53,8 +53,8 @@ const getProductDetails = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({
             ...product,
             inventoryId: product.inventoryId,
-            stock: inventory.stock || 0,
-            stockStatus: inventory.stock > 0 ? 'in stock' : 'out of stock',
+            stock: inventory.quantity || 0,
+            stockStatus: inventory.quantity > 0 ? 'in stock' : 'out of stock',
         });
     } catch (error) {
         next(error);
