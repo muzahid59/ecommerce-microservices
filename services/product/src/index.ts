@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import {createProduct, getProducts, getProductDetails} from './controllers';
+import getProductById from './controllers/getProductById';
 
 
 dotenv.config();
@@ -24,6 +25,9 @@ app.get('/products', (req: Request, res: Response, next: NextFunction) => {
 });
 app.get('/products/:id/details', (req: Request, res: Response, next: NextFunction) => {
     getProductDetails(req, res, next);
+});
+app.get('/products/:id', (req: Request, res: Response, next: NextFunction) => {
+    getProductById(req, res, next);
 });
 app.post('/products', (req: Request, res: Response, next: NextFunction) => {
     createProduct(req, res, next);  
