@@ -13,6 +13,10 @@ export const createHandler = (hostName: string, path: string, method: string) =>
         method,
         url: url,
         data: req.body,
+        headers: {
+          ...req.headers,
+          origin: 'http://localhost:8081',
+        },
       });
 
       res.json(data);

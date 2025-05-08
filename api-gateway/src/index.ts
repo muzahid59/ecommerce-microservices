@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -23,6 +23,7 @@ const limiter = rateLimit({
         .json({ message: 'Too many requests, please try again later.' }); 
     }
 });
+
 app.use(limiter);
 
 // request logger
