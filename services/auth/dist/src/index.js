@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
-const controllers_1 = require("@/controllers");
+const controllers_1 = require("./controllers");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -28,12 +28,15 @@ app.get('/health', (_req, res) => {
 //         res.status(403).json({ message: 'Forbidden' });
 //     }
 // });
-// Routes
-app.get('users/:id', (req, res, next) => {
-    (0, controllers_1.getUserById)(req, res, next);
+// routes
+app.post('/auth/registration', (req, res, next) => {
+    (0, controllers_1.userRegistration)(req, res, next).catch(next);
 });
-app.post('/users', (req, res, next) => {
-    (0, controllers_1.createUser)(req, res, next);
+app.post('/auth/login', (req, res, next) => {
+    (0, controllers_1.userLogin)(req, res, next).catch(next);
+});
+app.post('/auth/verify-token', (req, res, next) => {
+    (0, controllers_1.verifyAccessToken)(req, res, next).catch(next);
 });
 // 404 handler
 app.use((_req, res) => {

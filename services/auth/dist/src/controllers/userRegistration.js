@@ -1,0 +1,58 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const prisma_1 = require("@/prisma");
+const schemas_1 = require("@/schemas");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const axios_1 = __importDefault(require("axios"));
+const config_1 = require("../config");
+const userRegistration = async (req, res, next) => {
+    try {
+        // validate request body
+        const parseBody = schemas_1.UserCreateSchema.safeParse(req.body);
+        if (!parseBody.success) {
+            return res.status(400).json({ errors: parseBody.error.errors });
+        }
+        // check if user already exists
+        const userExists = await prisma_1.prisma.user.findUnique({
+            where: { email: parseBody.data.email },
+        });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+        // hash password
+        const salt = await bcryptjs_1.default.genSalt(10);
+        const hashedPassword = await bcryptjs_1.default.hash(parseBody.data.password, salt);
+        // Create the auth user
+        const authUser = await prisma_1.prisma.user.create({
+            data: {
+                ...parseBody.data,
+                password: hashedPassword,
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                status: true,
+                verified: true,
+            }
+        });
+        console.log('User created:', authUser);
+        // create the user profile by calling the user service
+        await axios_1.default.post(`${config_1.USER_SERVICE}/users`, {
+            authUserId: authUser.id,
+            name: authUser.name,
+            email: authUser.email,
+        });
+        // TODO: verification code generation
+        // TODO: send verification email
+        return res.status(201).json({ authUser });
+    }
+    catch (err) {
+        next(err);
+    }
+};
+exports.default = userRegistration;

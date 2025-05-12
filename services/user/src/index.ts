@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import { createUser, getUserById } from './controllers';
+import { createUser, getUserById } from '@/controllers';
 
 
 
@@ -18,7 +18,6 @@ app.use(morgan('dev'));
 app.get('/health', (_req, res) => {
     res.status(200).json({ message: 'Service is healthy' });
 });
-
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     const allowedOrigins = ['http://localhost:8081', 'http://127.0.0.1:8081'];
 //     const origin = req.headers.origin || '';
@@ -30,7 +29,6 @@ app.get('/health', (_req, res) => {
 //         res.status(403).json({ message: 'Forbidden' });
 //     }
 // });
-
 // Routes
 app.get('users/:id', (req: Request, res: Response, next: NextFunction) => {
     getUserById(req, res, next);
@@ -38,22 +36,17 @@ app.get('users/:id', (req: Request, res: Response, next: NextFunction) => {
 app.post('/users', (req: Request, res: Response, next: NextFunction) => {
     createUser(req, res, next);
 });
-
 // 404 handler
 app.use((_req, res) => {
     res.status(404).json({ message: 'Not Found'});
 });
-    
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Internal Server Error' });
 });
-
 const port = process.env.PORT || 4002;
 const serviceName = process.env || 'User-Service';
-
-
 // Start the server
 app.listen(port, () => {
     console.log(`${serviceName} listening on port ${port}`);
