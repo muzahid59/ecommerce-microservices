@@ -3,7 +3,7 @@ import { prisma } from '@/prisma';
 import { UserCreateSchema } from '@/schemas';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
-import { USER_SERVICE } from '../config';
+import { USER_SERVICE, EMAIL_SERVICE_URL } from '../config';
 
 
 const generateVerificationCode = () => {
@@ -75,7 +75,7 @@ const userRegistration = async (
 
     // send verification email
 
-    await axios.post(`${USER_SERVICE}/emails/send`, {
+    await axios.post(`${EMAIL_SERVICE_URL}/emails/send`, {
       recipient: authUser.email,
       subject: 'Email verification',
       body: `Your verification code is ${code}. It will expire in 24 hours.`,

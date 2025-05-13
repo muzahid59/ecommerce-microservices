@@ -5,12 +5,13 @@ import { transporter, defaultSender } from '../config';
 
 const sendEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('Sending email...');
     // parse and validate the request body
     const parsedBody = EmailCreateSchema.safeParse(req.body);
     if (!parsedBody.success) {
       return res.status(400).json({ error: parsedBody.error.errors });
     }
-
+    console.log('Parsed body:', parsedBody.data);
     // create email options
     const { recipient, subject, body, source, sender } = parsedBody.data;
     const from = sender || defaultSender;
@@ -20,12 +21,14 @@ const sendEmail = async (req: Request, res: Response, next: NextFunction) => {
       subject,
       text: body,
     }
+    console.log('Email options:', emailOptions);
     // send email using the transporter
     const { rejected } = await transporter.sendMail(emailOptions);
     if (rejected.length > 0) {
       console.log('Email rejected:', rejected);
       return res.status(500).json({ messsage: 'Failed to send email' });
     }
+    console.log('Email sent successfully');
     // save email to the database
     const email = await prisma.email.create({
       data: {

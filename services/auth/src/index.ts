@@ -32,7 +32,7 @@ app.get('/health', (_req, res) => {
 // });
 
 // routes
-app.post('/auth/registration', (req, res, next) => {
+app.post('/auth/register', (req, res, next) => {
     userRegistration(req, res, next).catch(next);
 });
 

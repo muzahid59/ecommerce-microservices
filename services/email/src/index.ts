@@ -51,8 +51,8 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
-const port = process.env.PORT || 4002;
-const serviceName = process.env || 'User-Service';
+const port = process.env.PORT || 4004;
+const serviceName = process.env || 'Email-Service';
 
 
 // Start the server

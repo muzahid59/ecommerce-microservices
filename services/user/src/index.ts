@@ -4,10 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { createUser, getUserById } from '@/controllers';
 
-
-
 dotenv.config();
-
 
 const app = express();
 app.use(express.json());
@@ -30,7 +27,8 @@ app.get('/health', (_req, res) => {
 //     }
 // });
 // Routes
-app.get('users/:id', (req: Request, res: Response, next: NextFunction) => {
+app.get('/users/:id', (req: Request, res: Response, next: NextFunction) => {
+    console.log('Getting user by ID...');
     getUserById(req, res, next);
 });
 app.post('/users', (req: Request, res: Response, next: NextFunction) => {
