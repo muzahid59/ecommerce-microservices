@@ -1,3 +1,2 @@
-export { default as verifyAccessToken } from './verifyAccessToken';
-export { default as userRegistration } from './userRegistration';
-export { default as userLogin } from './userLogin';
+export { default as sendEmail } from './sendEmail';
+export { default as getEmails } from './getEmails';

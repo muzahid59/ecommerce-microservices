@@ -8,6 +8,13 @@ const schemas_1 = require("@/schemas");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const axios_1 = __importDefault(require("axios"));
 const config_1 = require("../config");
+const generateVerificationCode = () => {
+    // Generate a random 2-digit verification code
+    const timestamp = new Date().getTime();
+    const randoomNum = Math.floor(10 + Math.random() * 90).toString();
+    let code = (timestamp + randoomNum).slice(-5);
+    return code;
+};
 const userRegistration = async (req, res, next) => {
     try {
         // validate request body
@@ -47,9 +54,25 @@ const userRegistration = async (req, res, next) => {
             name: authUser.name,
             email: authUser.email,
         });
-        // TODO: verification code generation
-        // TODO: send verification email
-        return res.status(201).json({ authUser });
+        const code = generateVerificationCode();
+        await prisma_1.prisma.verificationCode.create({
+            data: {
+                userid: authUser.id,
+                code,
+                expiresAt: new Date(Date.now() + 60 * 60 * 1000 * 24), // 24 hour expiration
+            }
+        });
+        // send verification email
+        await axios_1.default.post(`${config_1.USER_SERVICE}/emails/send`, {
+            recipient: authUser.email,
+            subject: 'Email verification',
+            body: `Your verification code is ${code}. It will expire in 24 hours.`,
+            source: 'user-registration',
+        });
+        return res.status(201).json({
+            authUser,
+            message: 'User created successfully. Please check your email for verification code.',
+        });
     }
     catch (err) {
         next(err);

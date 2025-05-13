@@ -31,7 +31,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
-  vefified  Boolean  @default(false)
+  verified  Boolean  @default(false)
   status AccountStatus @default(PENDING)
   histories LoginHistory[]
   verificationCodes VerificationCode[]  
@@ -76,6 +76,6 @@ enum VerificationCodeType {
   code      String
   type      VerificationCodeType @default(ACCOUNT_ACTIVATION)
   issuedAt  DateTime @default(now())
-  expriesAt DateTime
-  vefifiedAt DateTime?
+  expiresAt DateTime
+  verifiedAt DateTime?
  }

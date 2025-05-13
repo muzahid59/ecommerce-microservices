@@ -5,6 +5,15 @@ import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { USER_SERVICE } from '../config';
 
+
+const generateVerificationCode = () => {
+  // Generate a random 2-digit verification code
+  const timestamp = new Date().getTime();
+  const randoomNum = Math.floor(10 + Math.random() * 90).toString();
+  let code = (timestamp + randoomNum).slice(-5);
+  return code;
+};
+
 const userRegistration = async (
   req: Request,
   res: Response,
@@ -55,11 +64,28 @@ const userRegistration = async (
       email: authUser.email,
     });
 
-    // TODO: verification code generation
-    // TODO: send verification email
+    const code = generateVerificationCode();
+    await prisma.verificationCode.create({
+      data: {
+        userId: authUser.id,
+        code,
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000 * 24), // 24 hour expiration
+      }
+    });
 
+    // send verification email
 
-    return res.status(201).json({authUser});
+    await axios.post(`${USER_SERVICE}/emails/send`, {
+      recipient: authUser.email,
+      subject: 'Email verification',
+      body: `Your verification code is ${code}. It will expire in 24 hours.`,
+      source: 'user-registration',
+    });
+
+    return res.status(201).json({
+      authUser,
+      message: 'User created successfully. Please check your email for verification code.',
+    });
   } catch (err) {     
     next(err);
   }

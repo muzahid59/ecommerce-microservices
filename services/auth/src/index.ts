@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import { userRegistration, userLogin, verifyAccessToken } from './controllers';
+import { userRegistration, userLogin, verifyAccessToken, verifyEmail } from './controllers';
 
 
 
@@ -42,6 +42,10 @@ app.post('/auth/login', (req, res, next) => {
 app.post('/auth/verify-token', (req, res, next) => {
     verifyAccessToken(req, res, next).catch(next);
 });
+app.post('/auth/verify-email', (req, res, next) => {
+    verifyEmail(req, res, next).catch(next);
+});
+
 
 
 // 404 handler

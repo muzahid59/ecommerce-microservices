@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import { userRegistration, userLogin, verifyAccessToken } from './controllers';
+import { getEmails, sendEmail } from './controllers';
 
 
 
@@ -32,8 +32,13 @@ app.get('/health', (_req, res) => {
 // });
 
 // routes
+app.post('/emails/send', (req, res, next) => {
+    sendEmail(req, res, next).catch(next);
+});
 
-
+app.get('/emails', (req, res, next) => {
+    getEmails(req, res, next).catch(next);
+});
 
 // 404 handler
 app.use((_req, res) => {

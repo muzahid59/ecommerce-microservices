@@ -1,4 +1,3 @@
-import {} from 'express';
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '@/prisma';
 import { AccessTokenSchema } from '@/schemas';

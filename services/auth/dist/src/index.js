@@ -38,6 +38,9 @@ app.post('/auth/login', (req, res, next) => {
 app.post('/auth/verify-token', (req, res, next) => {
     (0, controllers_1.verifyAccessToken)(req, res, next).catch(next);
 });
+app.post('/auth/verify-email', (req, res, next) => {
+    (0, controllers_1.verifyEmail)(req, res, next).catch(next);
+});
 // 404 handler
 app.use((_req, res) => {
     res.status(404).json({ message: 'Not Found' });
