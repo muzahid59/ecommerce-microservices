@@ -32,7 +32,6 @@ app.get('/health', (_req, res) => {
 app.post('/emails/send', (req, res, next) => {
     sendEmail(req, res, next).catch(next);
 });
-
 app.get('/emails', (req, res, next) => {
     getEmails(req, res, next).catch(next);
 });

@@ -36,6 +36,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/inventories/:id/details', (req: Request, res: Response, next: NextFunction) => {
     getInventoryDetails(req, res, next);
 });
+
 app.get('/inventories/:id', (req: Request, res: Response, next: NextFunction) => {
     getInventoryById(req, res, next);
 });
@@ -43,6 +44,7 @@ app.get('/inventories/:id', (req: Request, res: Response, next: NextFunction) =>
 app.put('/inventories/:id', (req: Request, res: Response, next: NextFunction) => {
     updateInventory(req, res, next);
 });
+
 app.post('/inventories', (req: Request, res: Response, next: NextFunction) => {
     console.log('createInventory called');
     createInventory(req, res, next);

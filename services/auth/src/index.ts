@@ -35,7 +35,6 @@ app.get('/health', (_req, res) => {
 app.post('/auth/register', (req, res, next) => {
     userRegistration(req, res, next).catch(next);
 });
-
 app.post('/auth/login', (req, res, next) => {
     userLogin(req, res, next).catch(next);
 });
@@ -45,8 +44,6 @@ app.post('/auth/verify-token', (req, res, next) => {
 app.post('/auth/verify-email', (req, res, next) => {
     verifyEmail(req, res, next).catch(next);
 });
-
-
 
 // 404 handler
 app.use((_req, res) => {

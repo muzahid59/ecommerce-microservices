@@ -35,12 +35,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/products', (req: Request, res: Response, next: NextFunction) => {
     getProducts(req, res, next);
 });
+
 app.get('/products/:id/details', (req: Request, res: Response, next: NextFunction) => {
     getProductDetails(req, res, next);
 });
+
 app.get('/products/:id', (req: Request, res: Response, next: NextFunction) => {
     getProductById(req, res, next);
 });
+
 app.post('/products', (req: Request, res: Response, next: NextFunction) => {
     createProduct(req, res, next);  
 });
