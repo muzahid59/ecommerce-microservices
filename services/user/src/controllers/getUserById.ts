@@ -5,11 +5,9 @@ import { Prisma } from '../../generated/prisma';
 // /users/:id?field=id|authUserId
 const getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('Getting user by ID...');
         const { id } = req.params;
         const field = req.query.field;
         const fieldName: string = field === 'authUserId' ? 'authUserId' : 'id';
-        console.log('Field:', fieldName);
         let where: Prisma.UserWhereUniqueInput
         if (fieldName === 'authUserId') {
             where = { authUserId: id };

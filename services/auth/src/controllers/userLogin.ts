@@ -45,12 +45,6 @@ const userLogin = async (
     });
 
     if (!user) {
-      await createLoginHistory({
-        userId: 'Guest',
-        ipAddress,
-        userAgent,
-        attempt: 'FAILED',
-      });
       return res.status(400).json({ message: 'User not found' });
     }
 

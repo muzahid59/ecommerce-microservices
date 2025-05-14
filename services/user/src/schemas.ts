@@ -7,12 +7,6 @@ export const UserCreateSchema = z.object({
   address: z.string().optional(),
   phone: z.string().optional()
 });
-// export const UpdateUserSchema =  z.object({
-//   name: z.string().optional(),
-//   email: z.string().email().optional(),
-//   address: z.string().optional(),
-//   phone: z.string().optional()
-// })
 
 export const UserUpdateSchema =  UserCreateSchema.omit({
   authUserId: true

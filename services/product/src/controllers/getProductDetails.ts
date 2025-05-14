@@ -3,8 +3,7 @@ import prisma from '@/prisma';
 import axios from 'axios';
 
 const getProductDetails = async (req: Request, res: Response, next: NextFunction) => { 
-    console.log("getProductDetails called");
-    console.log('req.params:', req.params); // Add this line
+
     try {
         const { id } = req.params;
         const product = await prisma.product.findUnique({

@@ -4,10 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { getEmails, sendEmail } from './controllers';
 
-
-
 dotenv.config();
-
 
 const app = express();
 app.use(express.json());

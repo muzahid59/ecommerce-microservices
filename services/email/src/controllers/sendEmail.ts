@@ -5,7 +5,6 @@ import { transporter, defaultSender } from '../config';
 
 const sendEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('Sending email...');
     // parse and validate the request body
     const parsedBody = EmailCreateSchema.safeParse(req.body);
     if (!parsedBody.success) {
