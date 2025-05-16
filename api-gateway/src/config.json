@@ -54,6 +54,16 @@
           "middlewares": []
         }
       ]
+    },
+    "user": {
+      "url": "http://localhost:4002",
+      "routes": [
+        {
+          "path": "/users/:id",
+          "methods": ["get"],
+          "middlewares": ["auth"]
+        }
+      ]
     }
   }
 }
