@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import morgan from 'morgan';
-import { addToCart, getMyCart } from './controllers';
+import { addToCart, getMyCart, clearCart } from './controllers';
 import './events/onKeyExpires';
 
 dotenv.config();
@@ -40,9 +40,11 @@ app.get('/health', (_req, res) => {
 app.get('/cart/get-my-cart', (req: Request, res: Response, next: NextFunction) => {
     getMyCart(req, res, next);
 });
-
 app.post('/cart/add-to-cart', (req: Request, res: Response, next: NextFunction) => {
    addToCart(req, res, next); 
+});
+app.post('/cart/clear-cart', (req: Request, res: Response, next: NextFunction) => {
+    clearCart(req, res, next);
 });
 
 
