@@ -2,8 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import {createProduct, getProducts, getProductDetails} from './controllers';
-import getProductById from './controllers/getProductById';
+import {createProduct, getProducts, getProductDetails, getProductById, updateProduct} from './controllers';
 
 
 dotenv.config();
@@ -41,6 +40,10 @@ app.get('/products/:id/details', (req: Request, res: Response, next: NextFunctio
 
 app.get('/products/:id', (req: Request, res: Response, next: NextFunction) => {
     getProductById(req, res, next);
+});
+
+app.put('/products/:id', (req: Request, res: Response, next: NextFunction) => {
+    updateProduct(req, res, next);
 });
 
 app.post('/products', (req: Request, res: Response, next: NextFunction) => {
