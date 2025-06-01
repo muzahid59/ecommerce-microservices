@@ -1,5 +1,6 @@
 import amqp from "amqplib";
 import { QUEUE_SERVICE_URL } from "./config";
+import redis from "./redis";
 
 const receiveFromQueue = async (queue: string, callBack: (message: string) => void) => {
   const connection = await amqp.connect(QUEUE_SERVICE_URL);
@@ -18,5 +19,8 @@ const receiveFromQueue = async (queue: string, callBack: (message: string) => vo
 }
 
 receiveFromQueue('clear-cart', (message) => { 
+  const cartSessionId = JSON.parse(message).cartSessionId;
+  redis.del(`cart:${cartSessionId}`);
+  redis.del(`session:${cartSessionId}`);
   console.log(`Received message from queue 'clear-cart': ${message}`);
 });

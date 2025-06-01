@@ -69,26 +69,26 @@ const checkout = async (req: Request, res: Response, next: NextFunction) => {
           },
         },
       });
+      console.log('Order created:', order);
+      // // clear the cart
+      // await axios.post(`${CART_SERVICE_URL}/cart/clear-cart`, {
+      //   headers: {
+      //     'cart-session-id': parsedBody.data.cartSessionId,
+      //   }
+      // });
 
-      // clear the cart
-      await axios.post(`${CART_SERVICE_URL}/cart/clear-cart`, {
-        headers: {
-          'cart-session-id': parsedBody.data.cartSessionId,
-        }
-      });
-
-      // send email
-      await axios.post(`${EMAIL_SERVICE_URL}/emails/send`, {
-        recipient: parsedBody.data.userEmail,
-        subject: 'Order Confirmation',
-        body: `Thank you for your order! Your order ID is ${order.id}. The total amount is $${grandTotal.toFixed(2)}.`,
-        source: 'Checkout'
-      });
+      // // send email
+      // await axios.post(`${EMAIL_SERVICE_URL}/emails/send`, {
+      //   recipient: parsedBody.data.userEmail,
+      //   subject: 'Order Confirmation',
+      //   body: `Thank you for your order! Your order ID is ${order.id}. The total amount is $${grandTotal.toFixed(2)}.`,
+      //   source: 'Checkout'
+      // });
 
       // publish send mail event
-      sendToQueue('send-email', JSON.stringify({"cart-sesssion-id": parsedBody.data.cartSessionId}));
+      sendToQueue('send-email', JSON.stringify({order}));
       // publish clear cart event
-      sendToQueue('clear-cart', JSON.stringify({order}));
+      sendToQueue('clear-cart', JSON.stringify({'cartSessionId': parsedBody.data.cartSessionId}));
 
       return res.status(201).json({ message: 'Order placed successfully', order });
     } catch (error) {
