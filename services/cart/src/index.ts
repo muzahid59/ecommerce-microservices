@@ -6,6 +6,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { addToCart, getMyCart, clearCart } from './controllers';
 import './events/onKeyExpires';
+import './receiver'
 
 dotenv.config();
 

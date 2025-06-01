@@ -4,6 +4,7 @@ import axios from 'axios';
 import { CART_SERVICE_URL, EMAIL_SERVICE_URL, PRODUCT_SERVICE_URL } from '@/config'
 import { z } from 'zod';
 import prisma from '@/prisma';
+import sendToQueue from '@/queue';
 
 const checkout = async (req: Request, res: Response, next: NextFunction) => {  
     try {
@@ -83,6 +84,11 @@ const checkout = async (req: Request, res: Response, next: NextFunction) => {
         body: `Thank you for your order! Your order ID is ${order.id}. The total amount is $${grandTotal.toFixed(2)}.`,
         source: 'Checkout'
       });
+
+      // publish send mail event
+      sendToQueue('send-email', JSON.stringify({"cart-sesssion-id": parsedBody.data.cartSessionId}));
+      // publish clear cart event
+      sendToQueue('clear-cart', JSON.stringify({order}));
 
       return res.status(201).json({ message: 'Order placed successfully', order });
     } catch (error) {
